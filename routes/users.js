@@ -1,11 +1,12 @@
 var mysql = require("mysql");
+var md5 = require('md5');
 
 function ROUTER(router, pool) {
     var self = this;
     self.handleRoutes(router, pool);
 }
 
-ROUTER.prototype.handleRoutes = function(router, pool, md5) {
+ROUTER.prototype.handleRoutes = function(router, pool) {
     var self = this;
 
     router.get("/users", function(req, res) {
