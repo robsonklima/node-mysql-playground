@@ -5,7 +5,7 @@ function ROUTER(router, pool) {
     self.handleRoutes(router, pool);
 }
 
-ROUTER.prototype.handleRoutes = function(router, pool) {
+ROUTER.prototype.handleRoutes = function(router, pool, md5) {
     var self = this;
 
     router.get("/users", function(req, res) {
@@ -51,8 +51,7 @@ ROUTER.prototype.handleRoutes = function(router, pool) {
           , "password"
           , req.body.email
           , req.body.name
-          //, md5(req.body.password)
-          , req.body.password
+          , md5(req.body.password)
         ];
         query = mysql.format(query, vars);
         pool.getConnection(function(err, connection) {

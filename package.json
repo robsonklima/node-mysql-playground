@@ -1,12 +1,16 @@
 {
-  "name": "mysql-playground",
-  "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
+  "name": "node-mysql-playground",
+  "version": "0.0.1",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "md5": "^2.2.1",
+    "mysql": "^2.13.0"
+  },
+  "main": "server.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/robsonklima/node-mysql-playground.git"
@@ -17,10 +21,5 @@
     "url": "https://github.com/robsonklima/node-mysql-playground/issues"
   },
   "homepage": "https://github.com/robsonklima/node-mysql-playground#readme",
-  "dependencies": {
-    "body-parser": "^1.17.2",
-    "express": "^4.15.3",
-    "md5": "^2.2.1",
-    "mysql": "^2.13.0"
-  }
+  "description": ""
 }
