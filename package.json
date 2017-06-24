@@ -1,5 +1,5 @@
 {
-  "name": "OSG-MYSQL",
+  "name": "Node-Mysql-Playground",
   "version": "0.0.1",
   "scripts": {
     "start": "node server.js"
