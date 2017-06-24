@@ -1,8 +1,8 @@
 var mysql = require("mysql");
 
-function ROUTER(router, pool) {
+function ROUTER(router, pool, md5) {
     var self = this;
-    self.handleRoutes(router, pool);
+    self.handleRoutes(router, pool, md5);
 }
 
 ROUTER.prototype.handleRoutes = function(router, pool, md5) {

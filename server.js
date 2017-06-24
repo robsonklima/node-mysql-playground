@@ -2,11 +2,11 @@ var dbconfig = require("./config/dbconfig");
 var express = require("express");
 var mysql = require("mysql");
 var bodyParser = require("body-parser");
-//var md5 = require('MD5');
+var md5 = require('MD5');
 var app = express();
 
-// var {allowCrossDomain} = require('./middleware/allowCrossDomain');
-// app.use(allowCrossDomain);
+var {allowCrossDomain} = require('./middleware/allowCrossDomain');
+app.use(allowCrossDomain);
 
 function REST(){
     var self = this;
@@ -27,7 +27,7 @@ REST.prototype.configureExpress = function(pool) {
       app.use('/api', router);
 
       var users_router = require("./routes/users");
-      var users = new users_router(router, pool);
+      var users = new users_router(router, pool, md5);
 
       self.startServer();
 }
