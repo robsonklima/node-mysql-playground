@@ -14,12 +14,12 @@ ROUTER.prototype.handleRoutes = function(router, pool) {
         var vars = ["users"];
         query = mysql.format(query, vars);
         pool.getConnection(function(err, connection) {
-            connection.query(query, function(err, rows) {
+            connection.query(query, function(err, users) {
                 connection.release();
                 if(err) {
                     res.status(400).send({"error": true, "details": err});
                 } else {
-                    res.status(200).send({"error": false,  "users" : rows});
+                    res.status(200).send({"error": false,  users});
                 }
             });
         });
@@ -27,39 +27,15 @@ ROUTER.prototype.handleRoutes = function(router, pool) {
 
     router.get("/users/:id", function(req, res) {
         var query = "SELECT * FROM ?? WHERE ??=?";
-        var vars = ["users"
-          , "id"
-          , req.params.id
-        ];
+        var vars = ["users", "id", req.params.id];
         query = mysql.format(query,vars);
         pool.getConnection(function(err, connection) {
-            connection.query(query, function(err, rows) {
+            connection.query(query, function(err, user) {
                 connection.release();
                 if(err) {
                     res.status(400).send({"error": true, "details": err});
                 } else {
-                    res.status(200).send({"error": false,  "users" : rows});
-                }
-            });
-        });
-    });
-
-    router.get("/users/me", function(req, res) {
-        var query = "SELECT * FROM ?? WHERE ??=? AND ??=?";
-        var vars = ["users"
-          , "email"
-          , req.params.email
-          , "password"
-          , md5(req.params.password)
-        ];
-        query = mysql.format(query,vars);
-        pool.getConnection(function(err, connection) {
-            connection.query(query, function(err, rows) {
-                connection.release();
-                if(err) {
-                    res.status(400).send({"error": true, "details": err});
-                } else {
-                    res.status(200).send({"error": false,  "users" : rows});
+                    res.status(200).send({"error": false,  user});
                 }
             });
         });
@@ -68,43 +44,79 @@ ROUTER.prototype.handleRoutes = function(router, pool) {
     router.post("/users", function(req, res) {
         var query = "INSERT INTO ?? (??,??,??) VALUES (?,?,?)";
         var vars = ["users"
-          , "email"
-          , "name"
-          , "password"
-          , req.body.email
-          , req.body.name
-          , md5(req.body.password)
+          , "email", "name", "password"
+          , req.body.email, req.body.name, md5(req.body.password)
         ];
         query = mysql.format(query, vars);
         pool.getConnection(function(err, connection) {
-            connection.query(query, function(err, rows) {
+            connection.query(query, function(err, details) {
                 connection.release();
                 if(err) {
                     res.status(400).send({"error": true, "details": err});
                 } else {
-                    res.status(200).send({"error": false, "details": rows});
+                    res.status(200).send({"error": false, details, "user": req.body});
                 }
             });
         });
     });
 
-    router.put("/users/:id", function(req, res) {
-        var query = "UPDATE ?? SET ?? = ?, ?? = ?, ?? = ? WHERE ?? = ?";
+    router.post("/users/me", function(req, res) {
+        var query = "SELECT * FROM ?? WHERE ??=? AND ??=?";
+        var vars = ["users"
+          , "email", req.body.email
+          , "password", md5(req.body.password)
+        ];
+        query = mysql.format(query,vars);
+        pool.getConnection(function(err, connection) {
+            connection.query(query, function(err, user) {
+                connection.release();
+                if(err) {
+                    res.status(400).send({"error": true, "details": err});
+                } else {
+                    res.status(200).send({"error": false,  user});
+                }
+            });
+        });
+    });
+
+    router.put("/users/profile/:id", function(req, res) {
+        var query = "UPDATE ?? SET ?? = ?, ?? = ? WHERE ?? = ?";
         var vars = ["users"
           , "email", req.body.email
           , "name", req.body.name
-          , "password", md5(req.body.password)
 
           , "id", req.params.id
         ];
         query = mysql.format(query, vars);
         pool.getConnection(function(err, connection) {
-            connection.query(query, function(err, rows) {
+            connection.query(query, function(err, details) {
                 connection.release();
                 if(err) {
                     res.status(400).send({"error": true, "details": err});
+                } else if (details.affectedRows == 0) {
+                    res.status(404).send({"error": false, details });
                 } else {
-                    res.status(200).send({"error": false, "details": rows});
+                    res.status(200).send({"error": false, details, "user": req.body });
+                }
+            });
+        });
+    });
+
+    router.put("/users/password/:id", function(req, res) {
+        var query = "UPDATE ?? SET ?? = ? WHERE ?? = ?";
+        var vars = ["users", "password", md5(req.body.password)
+          , "id", req.params.id
+        ];
+        query = mysql.format(query, vars);
+        pool.getConnection(function(err, connection) {
+            connection.query(query, function(err, details) {
+                connection.release();
+                if(err) {
+                    res.status(400).send({"error": true, "details": err});
+                } else if (details.affectedRows == 0) {
+                    res.status(404).send({"error": false, details });
+                } else {
+                    res.status(200).send({"error": false, details });
                 }
             });
         });
@@ -112,18 +124,18 @@ ROUTER.prototype.handleRoutes = function(router, pool) {
 
     router.delete("/users/:id", function(req, res) {
         var query = "DELETE from ?? WHERE ??=?";
-        var table = ["users",
-          "id"
-          , req.params.id
+        var table = ["users", "id", req.params.id
         ];
         query = mysql.format(query,table);
         pool.getConnection(function(err, connection) {
-            connection.query(query, function(err, rows) {
+            connection.query(query, function(err, details) {
                 connection.release();
                 if(err) {
                     res.status(400).send({"error": true, "details": err});
+                } else if (details.affectedRows == 0) {
+                    res.status(404).send({"error": false, details });
                 } else {
-                    res.status(200).send({"error": false, "details": rows});
+                    res.status(200).send({"error": false, details });
                 }
             });
         });
