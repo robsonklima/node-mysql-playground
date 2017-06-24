@@ -27,7 +27,6 @@ REST.prototype.configureExpress = function(pool) {
       app.use('/api', router);
 
       var users_router = require("./routes/users");
-      
       var users = new users_router(router, pool, md5);
 
       self.startServer();
