@@ -44,6 +44,27 @@ ROUTER.prototype.handleRoutes = function(router, pool) {
         });
     });
 
+    router.get("/users/me", function(req, res) {
+        var query = "SELECT * FROM ?? WHERE ??=? AND ??=?";
+        var vars = ["users"
+          , "email"
+          , req.params.email
+          , "password"
+          , md5(req.params.password)
+        ];
+        query = mysql.format(query,vars);
+        pool.getConnection(function(err, connection) {
+            connection.query(query, function(err, rows) {
+                connection.release();
+                if(err) {
+                    res.status(400).send({"error": true, "details": err});
+                } else {
+                    res.status(200).send({"error": false,  "users" : rows});
+                }
+            });
+        });
+    });
+
     router.post("/users", function(req, res) {
         var query = "INSERT INTO ?? (??,??,??) VALUES (?,?,?)";
         var vars = ["users"
