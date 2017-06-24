@@ -21,9 +21,9 @@ switch(env) {
         var dbconfig = {
             connectionLimit : 100,
             host     : 'us-cdbr-iron-east-03.cleardb.net',
-            user     : 'be06fea7c0b0ce',
-            password : '051c2e19',
-            database : 'heroku_0571341e1415f9f',
+            user     : 'bad064e1d20b44',
+            password : '93a2e19e',
+            database : 'heroku_4b90ac511e96124',
             debug    :  false
         };
 }
