@@ -5,8 +5,8 @@ var bodyParser = require("body-parser");
 var md5 = require('MD5');
 var app = express();
 
-var {allowCrossDomain} = require('./middleware/allowCrossDomain');
-app.use(allowCrossDomain);
+// var {allowCrossDomain} = require('./middleware/allowCrossDomain');
+// app.use(allowCrossDomain);
 
 function REST(){
     var self = this;
