@@ -51,7 +51,8 @@ ROUTER.prototype.handleRoutes = function(router, pool, md5) {
           , "password"
           , req.body.email
           , req.body.name
-          , md5(req.body.password)
+          //, md5(req.body.password)
+          , req.body.password
         ];
         query = mysql.format(query, vars);
         pool.getConnection(function(err, connection) {
