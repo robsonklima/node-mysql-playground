@@ -26,7 +26,9 @@ REST.prototype.configureExpress = function(pool) {
       app.use('/api', router);
 
       var users_router = require("./routes/users");
+      var geolocations_router = require("./routes/geolocations");
       var users = new users_router(router, pool);
+      var geolocations = new geolocations_router(router, pool);
 
       self.startServer();
 }
