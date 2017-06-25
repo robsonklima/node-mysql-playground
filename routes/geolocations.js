@@ -21,12 +21,12 @@ ROUTER.prototype.handleRoutes = function(router, pool) {
                 if(err) {
                     res.status(400).send({"error": true, "details": err});
                 } else {
-                    res.status(200).send({"error": false, details, "user": req.body});
+                    res.status(200).send({"error": false, details, "geolocation": req.body});
                 }
             });
         });
     });
-    
+
 }
 
 module.exports = ROUTER;
