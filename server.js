@@ -27,8 +27,10 @@ REST.prototype.configureExpress = function(pool) {
 
       var users_router = require("./routes/users");
       var geolocations_router = require("./routes/geolocations");
+      var orders_router = require("./routes/orders");
       var users = new users_router(router, pool);
       var geolocations = new geolocations_router(router, pool);
+      var orders = new orders_router(router, pool);
 
       self.startServer();
 }
