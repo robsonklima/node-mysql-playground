@@ -58,7 +58,7 @@ ROUTER.prototype.handleRoutes = function(router, pool) {
           , req.body.address
           , req.body.marker_color
           , req.body.sla_limite
-          , req.body.status
+          , req.body.sla_status
           , req.body.intervencao
           , req.body.reincidencia
         ];
